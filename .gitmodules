@@ -1,0 +1,10 @@
+[submodule "src/piper_ros"]
+	path = src/piper_ros
+	url = https://github.com/agilexrobotics/piper_ros.git
+	branch = humble
+[submodule "src/vr_quest2_pub"]
+	path = src/vr_quest2_pub
+	url = git@github.com:ZhiChengAIR/vr_quest2_pub.git
+[submodule "src/coinrobot"]
+	path = src/coinrobot
+	url = git@github.com:ZhiChengAIR/coinrobot.git
