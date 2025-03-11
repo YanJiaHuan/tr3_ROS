@@ -57,7 +57,7 @@ which colcon # expected output: /home/zcai/miniforge3/envs/tr3/bin/colcon
 ### 2. Launch 
 ```shell
 # 连接机械臂
-cd /home/zcai/jh_workspace/Tr3/src/piper_ros
+cd /home/zcai/jh_workspace/tr3/src/piper_ros
 bash can_activate.sh can0 1000000
 sudo ethtool -i can0 | grep bus
 bash can_activate.sh can_piper 1000000 "1-7:1.0"
