@@ -1,0 +1,15 @@
+# Ros
+build/
+install/
+log/
+# Others
+.cmake/
+.cache/
+.idea/
+.vscode/
+# Compressed
+*.zip
+*.tar
+*.gz
+*.bz2
+*.7z
