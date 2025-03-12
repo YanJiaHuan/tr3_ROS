@@ -8,3 +8,9 @@
 [submodule "src/coinrobot"]
 	path = src/coinrobot
 	url = git@github.com:ZhiChengAIR/coinrobot.git
+[submodule "src/camera_driver"]
+	path = src/camera_driver
+	url = git@github.com:ZhiChengAIR/camera_driver.git
+[submodule "src/realsense-ros"]
+	path = src/realsense-ros
+	url = git@github.com:IntelRealSense/realsense-ros.git
