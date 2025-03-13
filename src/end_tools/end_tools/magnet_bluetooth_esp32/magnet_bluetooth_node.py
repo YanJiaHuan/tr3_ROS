@@ -9,13 +9,17 @@ class BluetoothMagnetNode(Node):
     def __init__(self):
         super().__init__('bluetooth_magnet_node')
 
+        # Subscription for control commands
         self.subscription = self.create_subscription(
             Bool,
             '/electromagnet_control',
             self.listener_callback,
             10)
 
-        # Declare parameters for the rfcomm port and baud rate
+        # Publisher for the magnet state
+        self.state_publisher = self.create_publisher(Bool, '/electromagnet_state', 10)
+
+        # Declare parameters for serial port settings
         self.declare_parameter('rfcomm_port', '/dev/rfcomm0')
         self.declare_parameter('baud_rate', 115200)
 
@@ -31,6 +35,14 @@ class BluetoothMagnetNode(Node):
             self.get_logger().error(f'Failed to open serial port {port_name}: {e}')
             self.ser = None
 
+        # Internal state for the magnet (assume OFF by default)
+        self.magnet_state = False
+
+        # Timer for publishing magnet state periodically
+        self.frequency = 10
+        self.timer_period = 1.0 / self.frequency
+        self.timer = self.create_timer(self.timer_period, self.publish_state_callback)
+
     def listener_callback(self, msg):
         if self.ser is None:
             self.get_logger().error('Serial connection not available.')
@@ -42,11 +54,29 @@ class BluetoothMagnetNode(Node):
             self.ser.write(command.encode())
             state_str = 'ON' if msg.data else 'OFF'
             self.get_logger().info(f'Sent electromagnet command: {state_str}')
+            
+            # Update the internal magnet state, but do not publish it here
+            self.magnet_state = msg.data
         except Exception as e:
             self.get_logger().error(f'Serial transmission failed: {e}')
 
+    def publish_state_callback(self):
+        # Publish the current magnet state on a timer
+        state_msg = Bool()
+        state_msg.data = self.magnet_state
+        self.state_publisher.publish(state_msg)
+        self.get_logger().debug(f'Published magnet state: {"ON" if self.magnet_state else "OFF"}')
+
     def destroy_node(self):
+        # Before closing, ensure the magnet is turned off
         if self.ser is not None:
+            try:
+                self.ser.write('0'.encode())
+                self.get_logger().info('Sent command to turn OFF magnet.')
+                # Update the state for the publisher as well
+                self.magnet_state = False
+            except Exception as e:
+                self.get_logger().error(f'Failed to send turn off command: {e}')
             self.ser.close()
             self.get_logger().info('Closed serial connection.')
         super().destroy_node()
@@ -59,10 +89,10 @@ def main(args=None):
     try:
         rclpy.spin(bluetooth_magnet_node)
     except KeyboardInterrupt:
-        pass
-
-    bluetooth_magnet_node.destroy_node()
-    rclpy.shutdown()
+        bluetooth_magnet_node.get_logger().info('KeyboardInterrupt received, shutting down...')
+    finally:
+        bluetooth_magnet_node.destroy_node()
+        rclpy.shutdown()
 
 
 if __name__ == '__main__':
