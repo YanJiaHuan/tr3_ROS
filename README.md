@@ -69,9 +69,13 @@ conda activate tr3
 
 ```shell
 # 编译ros包
+conda deactivate && conda deactivate
 rm -rf log/ build/ install/ # 清除之前的编译记录
 colcon build
+source /opt/ros/humble/setup.bash
 source install/setup.bash # 每个终端都要source 
+conda activate tr3
+
 ```
 
 ```shell
@@ -85,4 +89,19 @@ ros2 launch piper start_single_piper_rviz.launch.py can_port:=can_piper auto_ena
 ```shell
 # 启动vr遥操piper的pub节点
 ros2 run vr_quest2_pub vr_pub
+```
+
+```shell
+# 启动realsense 摄像头 [realsense官方自带的launch方法]
+ros2 launch realsense2_camera rs_launch.py camera_name:=camera1 serial_no:="'924322063554'"
+ros2 launch realsense2_camera rs_launch.py camera_name:=camera2 serial_no:="'935722063008'"
+```
+
+```shell
+# 启动末端工具节点 
+## 启动esp32 classic bluetooth控制节点
+ros2 launch end_tools magnet_bluetooth_esp32_launch.py
+#-----------单独发送测试指令----------------#
+ros2 topic pub /electromagnet_control std_msgs/msg/Bool '{data: true}' --once
+#----------------------------------------#    
 ```

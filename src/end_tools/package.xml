@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>end_tools</name>
+  <version>0.0.1</version>
+  <description>ROS2 package wrapping end-tools for ESP32 Bluetooth control</description>
+  <maintainer email="1337842463@qq.com">jiahuan</maintainer>
+  <license>MIT</license>
+
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+  <exec_depend>python3-bluetooth</exec_depend>
+
+  <buildtool_depend>ament_python</buildtool_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>
