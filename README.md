@@ -69,12 +69,13 @@ conda activate tr3
 
 ```shell
 # 编译ros包
-conda deactivate && conda deactivate
+#conda deactivate && conda deactivate
+conda activate tr3
 rm -rf log/ build/ install/ # 清除之前的编译记录
 colcon build
 source /opt/ros/humble/setup.bash
 source install/setup.bash # 每个终端都要source 
-conda activate tr3
+# conda activate tr3
 
 ```
 
