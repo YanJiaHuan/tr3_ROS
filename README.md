@@ -106,3 +106,5 @@ ros2 launch end_tools magnet_bluetooth_esp32_launch.py
 ros2 topic pub /electromagnet_control std_msgs/msg/Bool '{data: true}' --once
 #----------------------------------------#    
 ```
+
+### 3. Data collection

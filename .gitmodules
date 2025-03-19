@@ -14,3 +14,6 @@
 [submodule "src/realsense-ros"]
 	path = src/realsense-ros
 	url = git@github.com:IntelRealSense/realsense-ros.git
+[submodule "src/tr3_translator"]
+	path = src/tr3_translator
+	url = git@github.com:ZhiChengAIR/tr3_translator.git
