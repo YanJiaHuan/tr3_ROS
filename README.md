@@ -93,9 +93,14 @@ ros2 run vr_quest2_pub vr_pub
 ```
 
 ```shell
-# 启动realsense 摄像头 [realsense官方自带的launch方法]
+# 单独启动realsense 摄像头 [realsense官方自带的launch方法]
 ros2 launch realsense2_camera rs_launch.py camera_name:=camera1 serial_no:="'924322063554'"
 ros2 launch realsense2_camera rs_launch.py camera_name:=camera2 serial_no:="'935722063008'"
+# 单独启动realsense 摄像头 [camera_driver]
+ros2 launch camera_driver launch_left_wrist_realsense.launch.py
+ros2 launch camera_driver launch_right_wrist_realsense.launch.py
+# 启动rqt看摄像头数据(得摄像头launch后)
+rqt --perspective-file "./src/coinrobot/rqt_perspective/zcai_tr3_cams.perspective"
 ```
 
 ```shell
@@ -108,3 +113,17 @@ ros2 topic pub /electromagnet_control std_msgs/msg/Bool '{data: true}' --once
 ```
 
 ### 3. Data collection
+```shell
+# 启动遥操、电磁铁、摄像头、节点转译
+ros2 launch coinrobot collect_data_vrq2_tr3_launch.py
+
+# 启动数据采集（示例）
+ python ./src/collect_dataset.py \
+ --robot_scheme tr3 \
+ --continue 1 \
+ --task_max_t 30 \
+ --task_name test
+```
+
+
+ rqt --perspective-file "./src/coinrobot/rqt_perspective/zcai_tr3_cams.perspective"
