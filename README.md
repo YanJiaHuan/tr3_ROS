@@ -73,7 +73,6 @@ conda activate tr3
 conda activate tr3
 rm -rf log/ build/ install/ # 清除之前的编译记录
 colcon build
-source /opt/ros/humble/setup.bash
 source install/setup.bash # 每个终端都要source 
 # conda activate tr3
 
@@ -114,16 +113,19 @@ ros2 topic pub /electromagnet_control std_msgs/msg/Bool '{data: true}' --once
 
 ### 3. Data collection
 ```shell
-# 启动遥操、电磁铁、摄像头、节点转译
+# 启动遥操、电磁铁、节点转译
 ros2 launch coinrobot collect_data_vrq2_tr3_launch.py
-
+# 启动摄像头
+ros2 launch camera_driver launch_left_wrist_realsense.launch.py
+ros2 launch camera_driver launch_right_wrist_realsense.launch.py
 # 启动数据采集（示例）
- python ./src/collect_dataset.py \
- --robot_scheme tr3 \
- --continue 1 \
- --task_max_t 30 \
- --task_name test
+cd src/coinrobot
+python ./src/collect_dataset.py \
+--robot_scheme tr3 \
+--continue 1 \
+--task_max_t 30 \
+--task_name test
 ```
 
 
- rqt --perspective-file "./src/coinrobot/rqt_perspective/zcai_tr3_cams.perspective"
+rqt --perspective-file "./src/coinrobot/rqt_perspective/zcai_tr3_cams.perspective"
